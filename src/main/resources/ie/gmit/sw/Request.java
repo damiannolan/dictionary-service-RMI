@@ -1,6 +1,10 @@
 package ie.gmit.sw;
 
-public class Request {
+import java.io.Serializable;
+
+public class Request implements Serializable {
+	private static final long serialVersionUID = 42L;
+	
 	private long taskId;
 	private String query;
 	
@@ -8,4 +12,21 @@ public class Request {
 		this.taskId = taskId;
 		this.query = query;
 	}
+	
+	public String getQuery() {
+		return query;
+	}
+	
+	public long getTaskId() {
+		return taskId;
+	}
+	
+	public void setQuery(String query) {
+		this.query = query;
+	}
+	
+	public void setTaskId(long taskId) {
+		this.taskId = taskId;
+	}
+	
 }

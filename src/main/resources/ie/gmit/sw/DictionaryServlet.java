@@ -4,10 +4,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.rabbitmq.client.*;
 
 /**
  * Servlet implementation class DictionaryServlet
@@ -21,15 +24,27 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class DictionaryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private RequestQueue reqQueue;
 	private static long taskNumber = 0;
 	
-	public DictionaryServlet() {
+	public DictionaryServlet() throws IOException {
 		super();
+//		ConnectionFactory factory = new ConnectionFactory();
+//		factory.setHost("localhost");
+//		Connection connection = factory.newConnection();
+//		Channel channel = connection.createChannel();
+//		
+//		channel.queueDeclare(ctx.getInitParameter("IN_QUEUE"), false, false, false, null);
 	}
 
 	public void init(ServletConfig config) throws ServletException {
-		// TODO Auto-generated method stub
 		// Get an handle on environment vars or global vars defined in web.xml via ServletContext
+		try {
+			this.reqQueue = new RequestQueue();
+		} catch (IOException e) {
+			System.out.println("Error initializing queue with RabbitMQ");
+			e.printStackTrace();
+		}
 	}
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) 
@@ -70,7 +85,10 @@ public class DictionaryServlet extends HttpServlet {
 		System.out.println(taskNumber);
 		taskNumber++;
 		
+		// Create a new Request Object - passing it a taskId and query string
 		Request req = new Request(taskNumber, request.getParameter("queryText"));
+		// Queue the request with RabbitMQ
+		this.reqQueue.queueRequest(req);
 		
 		doGet(request, response);
 	}
