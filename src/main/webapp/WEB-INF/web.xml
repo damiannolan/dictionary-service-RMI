@@ -3,5 +3,16 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>Archetype Created Web Application</display-name>
+	<display-name>Archetype Created Web Application</display-name>
+
+	<servlet>
+		<servlet-name>DictionaryServlet</servlet-name>
+		<display-name>DictionaryServlet</display-name>
+		<description>A Servlet for handling dictionary requests</description>
+		<servlet-class>ie.gmit.sw.DictionaryServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DictionaryServlet</servlet-name>
+		<url-pattern>/DictionaryServlet</url-pattern>
+	</servlet-mapping>
 </web-app>
