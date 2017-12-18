@@ -11,10 +11,18 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Servlet implementation class DictionaryServlet
+ * 
+ * 1. Handle incoming request from web client
+ * 2. Take request and add to inQueue
+ * 3. Return requestId to web client
+ * 4. Start RMI Client thread - pull req from in queue
+ * 5. Make RMI Call
+ * 6. 
  */
 public class DictionaryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	private static long taskNumber = 0;
+	
 	public DictionaryServlet() {
 		super();
 	}
@@ -30,12 +38,40 @@ public class DictionaryServlet extends HttpServlet {
 		response.setContentType("text/html");
 
 		PrintWriter out = response.getWriter();
-		out.print("<h2>Dictionary Service</h2>");
-		out.print("Hello " + request.getParameter("queryText"));
+		
+		// HTML, head and body tags
+		out.print("<html><head><title>Dictionary Service</title>");
+		out.print("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css\" />");
+		out.print("</head>");		
+		out.print("<body>");
+		out.print("<div class=\"container\">");
+		out.print("<h2 class=\"text-center\">Dictionary Service</h2>");
+		out.print("<p id=\"waiting\" class=\"text-center\">Waiting for response... </p>");
+		
+		out.print("<form name=\"frmRequestDetails\" action=\"PollingServlet\">");
+		//out.print("<input name=\"txtTitle\" type=\"hidden\" value=\"" + title + "\">");
+		out.print("<input name=\"frmTaskNumber\" type=\"hidden\" value=\"" + taskNumber + "\">");
+		out.print("</form>");
+		
+		//JavaScript to periodically poll the server for updates (this is ideal for an asynchronous operation)
+		out.print("<script>");
+		out.print("var wait=setTimeout(\"document.frmRequestDetails.submit();\", 5000);"); // Refresh																							
+		out.print("</script>");
+		
+		// Closing tags
+		out.print("</div>");
+		out.print("</body>");	
+		out.print("</html>");
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		System.out.println(request.getParameter("queryText"));
+		System.out.println(taskNumber);
+		taskNumber++;
+		
+		Request req = new Request(taskNumber, request.getParameter("queryText"));
+		
 		doGet(request, response);
 	}
 

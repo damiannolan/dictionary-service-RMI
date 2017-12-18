@@ -11,8 +11,18 @@
 		<description>A Servlet for handling dictionary requests</description>
 		<servlet-class>ie.gmit.sw.DictionaryServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>PollingServlet</servlet-name>
+		<display-name>PollingServlet</display-name>
+		<description></description>
+		<servlet-class>ie.gmit.sw.PollingServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>DictionaryServlet</servlet-name>
 		<url-pattern>/DictionaryServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PollingServlet</servlet-name>
+		<url-pattern>/PollingServlet</url-pattern>
 	</servlet-mapping>
 </web-app>

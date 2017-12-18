@@ -5,19 +5,18 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" />
 </head>
 <body>
-	<h2>Dictionary Service</h2>
+	<div class="container">
+		<h2 class="text-center">Dictionary Service</h2>
 
+		<form method="POST" action="DictionaryServlet">
 
-
-	<form method="POST" action="DictionaryServlet">
-
-		<div class="form-group">
-			<label for="lookUp">Dictionary Search Service</label> 
-			<input type="text" id="lookUp"  class="form-control" name="queryText" placeholder="Enter search query here" />
-
-		</div>
-		<input type="submit" class="btn btn-primary" name="submitBtn" />
-	</form>
-	
+			<div class="form-group">
+				<label class="text-center" for="lookUp">Dictionary Search
+					Service</label> <input type="text" id="lookUp" class="form-control"
+					name="queryText" placeholder="Enter search query here" />
+			</div>
+			<input type="submit" class="btn btn-primary" name="submitBtn" />
+		</form>
+	</div>
 </body>
 </html>
