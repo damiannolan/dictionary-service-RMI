@@ -1,13 +1,16 @@
 package ie.gmit.sw;
 
+import java.rmi.Naming;
+
 /*
  * Sleep for 10 seconds
- * Pull request from In Queue
  * Connect to RMI Registry
  * Make RMI Call
  * Add Response to Out Queue
  */
 public class RMIClient implements Runnable {
+	private final static String RMI_URL = "rmi://127.0.0.1:1099/dictionary";
+	private IDictionaryService dictionary;
 	private Request request;
 	
 	public RMIClient(Request req) { 
@@ -17,8 +20,14 @@ public class RMIClient implements Runnable {
 	public void run() {
 		try {
 			System.out.println("Starting RMI Client for: " + request);
+			
+			dictionary = (IDictionaryService) Naming.lookup(RMI_URL);
+			
+			String response = dictionary.lookUp(request.getQuery());
+			System.out.println(response);
+			
 			Thread.sleep(10000);
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
