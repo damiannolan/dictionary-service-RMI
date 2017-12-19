@@ -8,12 +8,12 @@ import org.apache.commons.lang.SerializationUtils;
 import com.rabbitmq.client.*;
 
 public class OutQueueService {
-	private HashMap<Long, Response> responseMap;
 	private final static String HOST = "localhost";
 	private final static String QUEUE_NAME = "OUTQUEUE";
 	private Channel channel;
 	private Consumer consumer;
-	
+	private HashMap<Long, Response> responseMap;
+
 	/*
 	 * Get a handle on the RabbitMQ Connection Factory
 	 * Create a new Connection
@@ -26,7 +26,7 @@ public class OutQueueService {
 		this.channel = connection.createChannel();
 		this.channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 		
-		this.consumer = new ResponseHandler(this.channel);
+		this.consumer = new InnerResponseHandler(this.channel);
 		this.responseMap = new HashMap<Long, Response>();
 	}
 	
@@ -42,29 +42,28 @@ public class OutQueueService {
 	}
 	
 	public Response pollResponse(long taskId) {
-		System.out.println("Printing from pollResponse: " + responseMap);
+		// Retrieve the response obj from the HashMap
 		Response resp = responseMap.get(taskId);
-		//responseMap.remove(taskId);
+		// Remove the response obj and return
+		responseMap.remove(taskId);
 		return resp;
 	}
 	
-	private class ResponseHandler extends DefaultConsumer {
+	private class InnerResponseHandler extends DefaultConsumer {
 			
-		public ResponseHandler(Channel channel) {
+		public InnerResponseHandler(Channel channel) {
 			super(channel);
 		}
 		
 		@Override
 		public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
 				throws IOException {
-			// Handle the Response
+			// Deserialize the body to a Response Object
 			Response resp = (Response) SerializationUtils.deserialize(body);
 			// Log the Response
 			System.out.println("Logging Response - @handleDelivery: " + resp);
 			// Store in the HashMap
-			System.out.println("Storing in map");
 			responseMap.put(resp.getTaskId(), resp);
-			System.out.println(responseMap);
 		}
 	}
 }
