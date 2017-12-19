@@ -51,7 +51,7 @@ public class DictionaryServlet extends HttpServlet {
 		out.print("<body>");
 		out.print("<div class=\"container\">");
 		out.print("<h2 class=\"text-center\">Dictionary Service</h2>");
-		out.print("<p id=\"waiting\" class=\"text-center\">Waiting for response... </p>");
+		out.print("<p id=\"waiting\" class=\"text-center\">Waiting for response... Polling</p>");
 
 		out.print("<form name=\"frmRequestDetails\" action=\"PollingServlet\">");
 		// out.print("<input name=\"txtTitle\" type=\"hidden\" value=\"" + title
@@ -62,13 +62,16 @@ public class DictionaryServlet extends HttpServlet {
 		// JavaScript to periodically poll the server for updates (this is ideal
 		// for an asynchronous operation)
 		out.print("<script>");
-		out.print("var wait=setTimeout(\"document.frmRequestDetails.submit();\", 5000);"); // Refresh
+		out.print("var wait=setTimeout(\"document.frmRequestDetails.submit();\", 1000);"); // Refresh
 		out.print("</script>");
 
 		// Closing tags
 		out.print("</div>");
 		out.print("</body>");
 		out.print("</html>");
+		
+		// Increment the taskNumber
+		taskNumber++;
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -80,9 +83,6 @@ public class DictionaryServlet extends HttpServlet {
 		
 		// Queue the request with RabbitMQ
 		inQueueService.queueRequest(req);
-		
-		// Increment the taskNumber
-		taskNumber++;
 
 		doGet(request, response);
 	}

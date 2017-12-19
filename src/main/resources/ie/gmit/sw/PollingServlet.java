@@ -3,6 +3,7 @@ package ie.gmit.sw;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,13 +14,28 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class PollingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private OutQueueService outQueueService;
 
 	public PollingServlet() {
 		super();
 	}
 
+	public void init(ServletConfig config) throws ServletException {
+		try {		
+			// Instantiate the OutQueueService
+			this.outQueueService = new OutQueueService();
+			outQueueService.consumeResponse();
+
+		} catch (Exception e) {
+			System.out.println("Queue Error occurred with RabbitMQ");
+			e.printStackTrace();
+		}
+	}
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+				
 		String taskNumber = request.getParameter("frmTaskNumber");
 		int counter = 1;
 		if (request.getParameter("counter") != null){
@@ -38,9 +54,17 @@ public class PollingServlet extends HttpServlet {
 		out.print("<body>");
 		out.print("<div class=\"container\">");
 		out.print("<h2 class=\"text-center\">Dictionary Service</h2>");
-		out.print("<p id=\"waiting\" class=\"text-center\">Waiting for response...Polling </p>");
 		
-		out.print("<form name=\"frmRequestDetails\">");
+		Response resp = outQueueService.pollResponse(Long.parseLong(taskNumber));
+		System.out.println("Printing from Servlet ---- " + resp);
+		if(resp == null) {
+			out.print("<p id=\"waiting\" class=\"text-center\">Waiting for response...Polling TaskID:" + taskNumber + "</p>");
+		} else {
+			out.print("<p id=\"response\" class=\"text-center\">" + resp + "</p>");
+		}
+
+		
+		out.print("<form name=\"frmRequestDetails\" action=\"PollingServlet\">");
 		//out.print("<input name=\"txtTitle\" type=\"hidden\" value=\"" + title + "\">");
 		out.print("<input name=\"frmTaskNumber\" type=\"hidden\" value=\"" + taskNumber + "\">");
 		out.print("<input name=\"counter\" type=\"hidden\" value=\"" + counter + "\">");
@@ -52,7 +76,7 @@ public class PollingServlet extends HttpServlet {
 		out.print("</html>");
 		
 		out.print("<script>");
-		out.print("var wait=setTimeout(\"document.frmRequestDetails.submit();\", 5000);"); //Refresh every 5 seconds
+		out.print("var wait=setTimeout(\"document.frmRequestDetails.submit();\", 10000);"); //Refresh every 5 seconds
 		out.print("</script>");
 	}
 

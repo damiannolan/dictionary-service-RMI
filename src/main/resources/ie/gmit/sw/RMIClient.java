@@ -1,7 +1,6 @@
 package ie.gmit.sw;
 
 import java.rmi.Naming;
-import java.util.List;
 
 import ie.gmit.sw.server.IDictionaryService;
 
@@ -15,6 +14,7 @@ public class RMIClient implements Runnable {
 	private final static String RMI_URL = "rmi://127.0.0.1:1099/dictionaryService";
 	private IDictionaryService dictionary;
 	private Request request;
+	private OutQueueService outQueueService;
 	
 	public RMIClient(Request req) { 
 		this.request = req;
@@ -26,9 +26,11 @@ public class RMIClient implements Runnable {
 			Thread.sleep(10000);
 			
 			dictionary = (IDictionaryService) Naming.lookup(RMI_URL);
-			List<String> response = dictionary.lookUp(request.getQuery());
-			System.out.println("Logging response" + response);
+			Response resp = new Response(this.request.getTaskId(), dictionary.lookUp(request.getQuery()));
+			//System.out.println("Logging response" + resp);
 			
+			this.outQueueService = new OutQueueService();
+			outQueueService.queueResponse(resp);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

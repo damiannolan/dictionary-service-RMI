@@ -1,10 +1,18 @@
 package ie.gmit.sw;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.commons.lang.SerializationUtils;
 
-import com.rabbitmq.client.*;
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.Consumer;
+import com.rabbitmq.client.DefaultConsumer;
+import com.rabbitmq.client.Envelope;
 
 public class InQueueService {
 
@@ -25,7 +33,8 @@ public class InQueueService {
 		this.channel = connection.createChannel();
 		this.channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 		
-		this.consumer = new Worker(this.channel);
+		//this.consumer = new RequestHandler(this.channel);
+		this.consumer = new InnerRequestHandler(this.channel);
 	}
 	
 	/*
@@ -37,5 +46,21 @@ public class InQueueService {
 	
 	public void consumeRequest() throws IOException {
 		channel.basicConsume(QUEUE_NAME, true, consumer);
+	}
+	
+	private class InnerRequestHandler extends DefaultConsumer {
+		private ExecutorService executorService;
+		
+		public InnerRequestHandler(Channel channel) {
+			super(channel);
+			this.executorService = Executors.newFixedThreadPool(5);
+		}
+		
+		@Override
+		public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
+				throws IOException {
+			Request req = (Request) SerializationUtils.deserialize(body);
+			executorService.submit(new RMIClient(req));
+		}
 	}
 }

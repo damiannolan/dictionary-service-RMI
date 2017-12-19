@@ -8,10 +8,10 @@ import org.apache.commons.lang.SerializationUtils;
 
 import com.rabbitmq.client.*;
 
-public class Worker extends DefaultConsumer {
+public class RequestHandler extends DefaultConsumer {
 	private ExecutorService executorService;
 
-	public Worker(Channel channel) throws Exception {
+	public RequestHandler(Channel channel) throws Exception {
 		super(channel);
         //channel.basicConsume("INQUEUE", false, this);
 		executorService = Executors.newFixedThreadPool(3);
