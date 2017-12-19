@@ -18,24 +18,26 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class DictionaryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private RequestQueue reqQueue;
 	private static long taskNumber = 0;
+	
+	private InQueueService inQueueService;
 
 	public DictionaryServlet() {
 		super();
 	}
 
 	public void init(ServletConfig config) throws ServletException {
-		// Instantiate the Request Queue upon initialization of the Servlet
-		try {
-			this.reqQueue = new RequestQueue();
-		} catch (IOException e) {
-			System.out.println("Error initializing queue with RabbitMQ");
+		try {		
+			// Instantiate the InQueueService
+			this.inQueueService = new InQueueService();
+		} catch (Exception e) {
+			System.out.println("Queue Error occurred with RabbitMQ");
 			e.printStackTrace();
 		}
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		inQueueService.consumeRequest();
 
 		response.setContentType("text/html");
 
@@ -75,16 +77,14 @@ public class DictionaryServlet extends HttpServlet {
 		
 		// Create a new Request Object - passing it a taskId and query string
 		Request req = new Request(taskNumber, request.getParameter("queryText"));
+		
 		// Queue the request with RabbitMQ
-		this.reqQueue.queueRequest(req);
-		// Create a new RMIClient worker and start the thread
-		Thread worker = new Thread(new RMIClient());
-		worker.start();
+		inQueueService.queueRequest(req);
 		
 		// Increment the taskNumber
 		taskNumber++;
 
 		doGet(request, response);
 	}
-
+	
 }

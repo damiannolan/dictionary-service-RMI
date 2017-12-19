@@ -28,5 +28,10 @@ public class Request implements Serializable {
 	public void setTaskId(long taskId) {
 		this.taskId = taskId;
 	}
+
+	@Override
+	public String toString() {
+		return "Request [taskId=" + taskId + ", query=" + query + "]";
+	}
 	
 }
