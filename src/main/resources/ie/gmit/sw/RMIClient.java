@@ -2,6 +2,8 @@ package ie.gmit.sw;
 
 import java.rmi.Naming;
 
+import ie.gmit.sw.server.IDictionaryService;
+
 /*
  * Sleep for 10 seconds
  * Connect to RMI Registry
@@ -9,7 +11,7 @@ import java.rmi.Naming;
  * Add Response to Out Queue
  */
 public class RMIClient implements Runnable {
-	private final static String RMI_URL = "rmi://127.0.0.1:1099/dictionary";
+	private final static String RMI_URL = "rmi://127.0.0.1:1099/dictionaryService";
 	private IDictionaryService dictionary;
 	private Request request;
 	
