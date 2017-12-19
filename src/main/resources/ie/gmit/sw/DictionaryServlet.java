@@ -51,7 +51,7 @@ public class DictionaryServlet extends HttpServlet {
 		out.print("<body>");
 		out.print("<div class=\"container\">");
 		out.print("<h2 class=\"text-center\">Dictionary Service</h2>");
-		out.print("<p id=\"waiting\" class=\"text-center\">Waiting for response... Polling</p>");
+		out.print("<p id=\"waiting\" class=\"text-center\">Waiting for response...</p>");
 
 		out.print("<form name=\"frmRequestDetails\" action=\"PollingServlet\">");
 		// out.print("<input name=\"txtTitle\" type=\"hidden\" value=\"" + title

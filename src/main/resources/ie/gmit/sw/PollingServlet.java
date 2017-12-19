@@ -58,9 +58,17 @@ public class PollingServlet extends HttpServlet {
 		Response resp = outQueueService.pollResponse(Long.parseLong(taskNumber));
 		System.out.println("Printing from Servlet ---- " + resp);
 		if(resp == null) {
-			out.print("<p id=\"waiting\" class=\"text-center\">Waiting for response...Polling TaskID:" + taskNumber + "</p>");
+			out.print("<p id=\"waiting\" class=\"text-center\">Waiting for response...</p>");
 		} else {
-			out.print("<p id=\"response\" class=\"text-center\">" + resp + "</p>");
+			out.print("<div id=\"response\" class=\"text-center\"><h4 class=\"text-center\">Response</h4>");
+			out.print("<p class=\"text-center\"> Task ID: " + resp.getTaskId() + "</p>");
+			
+			for(String def : resp.getDefintions()) {
+				out.print("<p> - " + def + "</p>");
+			}
+			
+			out.print("</div>");
+			out.print("<div class=\"text-center\"><a class=\"btn btn-primary\" href=\"index.jsp\">Make another query</a></div>");
 		}
 
 		
