@@ -49,6 +49,7 @@ public class DictionaryService extends UnicastRemoteObject implements IDictionar
 			reader.close();
 		} catch (IOException e) {
 			// Create an empty dictionary
+			System.out.println("Could not find file - " + fileName + ".\n Try placing the file in the same directory as your jar file or at the root level of your application");;
 			this.dictionary = new HashMap<String, List<String>>();																	
 		}
 	}
@@ -69,11 +70,15 @@ public class DictionaryService extends UnicastRemoteObject implements IDictionar
 	}
 	
 	public List<String> lookUp(String s) {
-		System.out.println("Requested lookup");
+		System.out.println("Requested lookup - " + s);
+		
 		
 		List<String> defList = getDefintion(s);
-		System.out.println(defList);
 		
+		if(defList == null) {
+			defList = new ArrayList<String>();
+			defList.add("System could not find definition for - " + s);
+		}
 		return defList;
 	}
 }
