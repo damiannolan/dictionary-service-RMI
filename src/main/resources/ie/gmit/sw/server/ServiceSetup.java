@@ -3,7 +3,7 @@ package ie.gmit.sw.server;
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 
-public class Server {
+public class ServiceSetup {
 	
 	public static void main(String[] args) throws Exception {
 		// Start the RMI registry on port 1099
