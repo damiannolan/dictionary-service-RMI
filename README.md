@@ -16,7 +16,7 @@ The following diagram depicts the overall system architecture:
 
 ### Getting setup with RabbitMQ
 
-If you are OSX [Homebrew](https://brew.sh/) makes it easy to install various dependencies and manage services with [Brew Services](https://github.com/Homebrew/homebrew-services) such as RabbitMQ as well as various other dependencies such as databases - i.e. CouchDB or MySQL. To 
+If you are on OSX [Homebrew](https://brew.sh/) makes it easy to install various dependencies and manage services with [Brew Services](https://github.com/Homebrew/homebrew-services) such as RabbitMQ as well as various other dependencies such as databases - i.e. CouchDB or MySQL. To 
 get started with RabbitMQ follow these instructions.
 
 1. Update HomeBrew
