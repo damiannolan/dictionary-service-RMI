@@ -7,7 +7,7 @@ public class DictionaryService extends UnicastRemoteObject implements IDictionar
 
 	private static final long serialVersionUID = 42L;
 
-	protected DictionaryService() throws RemoteException {
+	public DictionaryService() throws RemoteException {
 		super();
 	}
 
