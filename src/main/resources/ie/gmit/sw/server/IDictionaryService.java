@@ -2,8 +2,9 @@ package ie.gmit.sw.server;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.List;
 
 public interface IDictionaryService extends Remote {
 	
-	public String lookUp(String s) throws RemoteException;
+	public List<String> lookUp(String s) throws RemoteException;
 }

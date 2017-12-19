@@ -1,6 +1,7 @@
 package ie.gmit.sw;
 
 import java.rmi.Naming;
+import java.util.List;
 
 import ie.gmit.sw.server.IDictionaryService;
 
@@ -22,13 +23,13 @@ public class RMIClient implements Runnable {
 	public void run() {
 		try {
 			System.out.println("Starting RMI Client for: " + request);
+			Thread.sleep(10000);
 			
 			dictionary = (IDictionaryService) Naming.lookup(RMI_URL);
+			List<String> response = dictionary.lookUp(request.getQuery());
+			System.out.println("Logging response" + response);
 			
-			String response = dictionary.lookUp(request.getQuery());
-			System.out.println(response);
 			
-			Thread.sleep(10000);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
