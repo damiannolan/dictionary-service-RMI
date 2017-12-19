@@ -25,13 +25,13 @@ public class RMIClient implements Runnable {
 			System.out.println("Starting RMI Client for: " + request);
 			Thread.sleep(10000);
 			
+			// Get a handle on the remote interface implementation stored in the RMI Registry
+			// via Naming.lookup()
 			dictionary = (IDictionaryService) Naming.lookup(RMI_URL);
 			Response resp = new Response(this.request.getTaskId(), dictionary.lookUp(request.getQuery()));
-			//System.out.println("Logging response" + resp);
 			
 			this.outQueueService = new OutQueueService();
 			outQueueService.queueResponse(resp);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

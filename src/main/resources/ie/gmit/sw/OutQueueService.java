@@ -31,12 +31,17 @@ public class OutQueueService {
 	}
 	
 	/*
-	 * Serialize the Response to the RabbitMQ Message Server
+	 * Serialize the Response to the RabbitMQ Message Server - OUTQUEUE
+	 * via channel.basicPublish() using SerializationUtils
 	 */
 	public void queueResponse(Response resp) throws IOException {
 		channel.basicPublish("", QUEUE_NAME, null, SerializationUtils.serialize(resp));
 	}
 	
+	/*
+	 * Consume the Response from the Queue
+	 * via channel.basicConsume() passing the Consumer defined below as - InnerResponseHandler
+	 */
 	public void consumeResponse() throws IOException {
 		channel.basicConsume(QUEUE_NAME, true, consumer);
 	}

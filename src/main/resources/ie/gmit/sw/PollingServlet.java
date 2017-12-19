@@ -9,9 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet implementation class PollingServlet
- */
 public class PollingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -59,6 +56,11 @@ public class PollingServlet extends HttpServlet {
 		System.out.println("Printing from Servlet ---- " + resp);
 		if(resp == null) {
 			out.print("<p id=\"waiting\" class=\"text-center\">Waiting for response...</p>");
+			
+			out.print("<form name=\"frmRequestDetails\" action=\"PollingServlet\">");
+			out.print("<input name=\"frmTaskNumber\" type=\"hidden\" value=\"" + taskNumber + "\">");
+			out.print("<input name=\"counter\" type=\"hidden\" value=\"" + counter + "\">");
+			out.print("</form>");
 		} else {
 			out.print("<div id=\"response\" class=\"text-center\"><h4 class=\"text-center\">Response</h4>");
 			out.print("<p class=\"text-center\"> Task ID: " + resp.getTaskId() + "</p>");
@@ -71,26 +73,18 @@ public class PollingServlet extends HttpServlet {
 			out.print("<div class=\"text-center\"><a class=\"btn btn-primary\" href=\"index.jsp\">Make another query</a></div>");
 		}
 
-		
-		out.print("<form name=\"frmRequestDetails\" action=\"PollingServlet\">");
-		//out.print("<input name=\"txtTitle\" type=\"hidden\" value=\"" + title + "\">");
-		out.print("<input name=\"frmTaskNumber\" type=\"hidden\" value=\"" + taskNumber + "\">");
-		out.print("<input name=\"counter\" type=\"hidden\" value=\"" + counter + "\">");
-		out.print("</form>");
-
 		// Closing tags
 		out.print("</div>");
 		out.print("</body>");
 		out.print("</html>");
 		
 		out.print("<script>");
-		out.print("var wait=setTimeout(\"document.frmRequestDetails.submit();\", 10000);"); //Refresh every 5 seconds
+		out.print("var wait=setTimeout(\"document.frmRequestDetails.submit();\", 10000);"); //Refresh every 10 seconds
 		out.print("</script>");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

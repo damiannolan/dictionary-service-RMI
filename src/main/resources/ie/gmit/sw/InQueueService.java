@@ -33,21 +33,29 @@ public class InQueueService {
 		this.channel = connection.createChannel();
 		this.channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 		
-		//this.consumer = new RequestHandler(this.channel);
 		this.consumer = new InnerRequestHandler(this.channel);
 	}
 	
 	/*
-	 * Serialize the Request to the RabbitMQ Message Server
+	 * Serialize the Request to the RabbitMQ Message Server - INQUEUE
+	 * via channel.basicPublish() using SerializationUtils
 	 */
 	public void queueRequest(Request req) throws IOException {
 		channel.basicPublish("", QUEUE_NAME, null, SerializationUtils.serialize(req));
 	}
 	
+	/*
+	 * Consume the Request from the Queue
+	 * via channel.basicConsume() passing the Consumer defined below as - InnerRequestHandler
+	 */
 	public void consumeRequest() throws IOException {
 		channel.basicConsume(QUEUE_NAME, true, consumer);
 	}
 	
+	/*
+	 * Inner class - InnerRequestHandler is responsible for consuming requests from the INQUEUE
+	 * And processing with the request via a new RMIClient worker thread dispatched using an ExecutorService
+	 */
 	private class InnerRequestHandler extends DefaultConsumer {
 		private ExecutorService executorService;
 		

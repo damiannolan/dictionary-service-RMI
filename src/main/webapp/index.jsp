@@ -15,7 +15,9 @@
 					Service</label> <input type="text" id="lookUp" class="form-control"
 					name="queryText" placeholder="Enter search query here" />
 			</div>
-			<input type="submit" class="btn btn-primary" name="submitBtn" />
+			<div class="text-center">
+				<input type="submit" class="btn btn-primary" name="submitBtn" />
+			</div>
 		</form>
 	</div>
 </body>

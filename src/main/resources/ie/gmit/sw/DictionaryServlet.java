@@ -9,13 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet implementation class DictionaryServlet
- * 
- * 1. Handle incoming request from web client 2. Take request and add to inQueue
- * 3. Return requestId to web client 4. Start RMI Client thread - pull req from
- * in queue 5. Make RMI Call 6.
- */
 public class DictionaryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static long taskNumber = 0;
@@ -70,14 +63,11 @@ public class DictionaryServlet extends HttpServlet {
 		out.print("</body>");
 		out.print("</html>");
 		
-		// Increment the taskNumber
+		// Finally - Increment the taskNumber
 		taskNumber++;
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println(request.getParameter("queryText"));
-		System.out.println(taskNumber);
-		
 		// Create a new Request Object - passing it a taskId and query string
 		Request req = new Request(taskNumber, request.getParameter("queryText"));
 		
