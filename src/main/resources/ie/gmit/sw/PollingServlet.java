@@ -30,7 +30,7 @@ public class PollingServlet extends HttpServlet {
 		}
 	}
 	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 				
 		String taskNumber = request.getParameter("frmTaskNumber");
@@ -83,7 +83,7 @@ public class PollingServlet extends HttpServlet {
 		out.print("</script>");
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doGet(request, response);
 	}

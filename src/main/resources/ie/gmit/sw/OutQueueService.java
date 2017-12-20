@@ -69,7 +69,7 @@ public class OutQueueService {
 	}
 	
 	@Override
-	protected void finalize() throws Throwable {
+	public void finalize() throws Throwable {
 		// Close connections when the object is out of scope and garbage collected
 		this.connection.close();
 		this.channel.close();
