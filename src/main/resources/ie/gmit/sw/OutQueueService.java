@@ -13,6 +13,7 @@ public class OutQueueService {
 	
 	private final static String HOST = "localhost";
 	private final static String QUEUE_NAME = "OUTQUEUE";
+	private Connection connection;
 	private Channel channel;
 	private Consumer consumer;
 	private HashMap<Long, Response> responseMap;
@@ -25,7 +26,7 @@ public class OutQueueService {
 	private OutQueueService() throws Exception {
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost(HOST);
-		Connection connection = factory.newConnection();
+		this.connection = factory.newConnection();
 		this.channel = connection.createChannel();
 		this.channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 		
@@ -65,6 +66,13 @@ public class OutQueueService {
 		// Remove the response obj and return
 		responseMap.remove(taskId);
 		return resp;
+	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		// Close connections when the object is out of scope and garbage collected
+		this.connection.close();
+		this.channel.close();
 	}
 	
 	private class InnerResponseHandler extends DefaultConsumer {

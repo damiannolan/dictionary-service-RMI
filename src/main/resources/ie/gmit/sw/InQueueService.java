@@ -1,8 +1,6 @@
 package ie.gmit.sw;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import org.apache.commons.lang.SerializationUtils;
 
@@ -20,6 +18,7 @@ public class InQueueService {
 
 	private final static String HOST = "localhost";
 	private final static String QUEUE_NAME = "INQUEUE";
+	private Connection connection;
 	private Channel channel;
 	private Consumer consumer;
 	
@@ -31,7 +30,7 @@ public class InQueueService {
 	private InQueueService() throws Exception {
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost(HOST);
-		Connection connection = factory.newConnection();
+		this.connection = factory.newConnection();
 		this.channel = connection.createChannel();
 		this.channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 		
@@ -64,23 +63,29 @@ public class InQueueService {
 		channel.basicConsume(QUEUE_NAME, true, consumer);
 	}
 	
+	@Override
+	protected void finalize() throws Throwable {
+		// Close connections when the object is out of scope and garbage collected
+		this.connection.close();
+		this.channel.close();
+	}
+	
 	/*
 	 * Inner class - InnerRequestHandler is responsible for consuming requests from the INQUEUE
-	 * And processing with the request via a new RMIClient worker thread dispatched using an ExecutorService
+	 * And dispatching the requests to RMIClient worker threads
 	 */
 	private class InnerRequestHandler extends DefaultConsumer {
-		private ExecutorService executorService;
 		
 		private InnerRequestHandler(Channel channel) {
 			super(channel);
-			this.executorService = Executors.newFixedThreadPool(5);
 		}
 		
 		@Override
 		public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
 				throws IOException {
 			Request req = (Request) SerializationUtils.deserialize(body);
-			executorService.submit(new RMIClient(req));
+			
+			new Thread(new RMIClient(req)).start();
 		}
 	}
 }
