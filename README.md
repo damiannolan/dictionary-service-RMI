@@ -68,7 +68,7 @@ brew services start tomcat
 
 #### Windows
 ```
--> C:\dev\tomcat\bin> startup
+-> C:\dev\tomcat\bin> startup.bat
 ```
 
 ### Note
