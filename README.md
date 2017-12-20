@@ -87,5 +87,5 @@ Eclipse -> File -> Import -> Maven -> Existing Maven Projects
 
 ## Example
 
-![example](https://i.imgur.com/wmLOzY5.gifv)
+![example](https://i.imgur.com/wmLOzY5.gif)
 
