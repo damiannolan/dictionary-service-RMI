@@ -8,6 +8,9 @@ import org.apache.commons.lang.SerializationUtils;
 import com.rabbitmq.client.*;
 
 public class OutQueueService {
+	// private static lazy singleton instance
+	private static OutQueueService instance;
+	
 	private final static String HOST = "localhost";
 	private final static String QUEUE_NAME = "OUTQUEUE";
 	private Channel channel;
@@ -19,7 +22,7 @@ public class OutQueueService {
 	 * Create a new Connection
 	 * Create a new Channel
 	 */
-	public OutQueueService() throws Exception {
+	private OutQueueService() throws Exception {
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost(HOST);
 		Connection connection = factory.newConnection();
@@ -28,6 +31,16 @@ public class OutQueueService {
 		
 		this.consumer = new InnerResponseHandler(this.channel);
 		this.responseMap = new HashMap<Long, Response>();
+	}
+	
+	/*
+	 * Static Singleton Factory method to get a handle on the instance
+	 */
+	public static OutQueueService getInstance() throws Exception {
+		if(instance == null) {
+			instance = new OutQueueService();
+		}
+		return instance;
 	}
 	
 	/*
@@ -56,7 +69,7 @@ public class OutQueueService {
 	
 	private class InnerResponseHandler extends DefaultConsumer {
 			
-		public InnerResponseHandler(Channel channel) {
+		private InnerResponseHandler(Channel channel) {
 			super(channel);
 		}
 		

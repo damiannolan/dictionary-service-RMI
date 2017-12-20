@@ -21,8 +21,8 @@ public class DictionaryServlet extends HttpServlet {
 
 	public void init(ServletConfig config) throws ServletException {
 		try {		
-			// Instantiate the InQueueService
-			this.inQueueService = new InQueueService();
+			// Get a handle on the instance of the InQueueService
+			this.inQueueService = InQueueService.getInstance();
 		} catch (Exception e) {
 			System.out.println("Queue Error occurred with RabbitMQ");
 			e.printStackTrace();

@@ -15,6 +15,8 @@ import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 
 public class InQueueService {
+	// private static lazy singleton instance
+	private static InQueueService instance;
 
 	private final static String HOST = "localhost";
 	private final static String QUEUE_NAME = "INQUEUE";
@@ -26,7 +28,7 @@ public class InQueueService {
 	 * Create a new Connection
 	 * Create a new Channel
 	 */
-	public InQueueService() throws Exception {
+	private InQueueService() throws Exception {
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost(HOST);
 		Connection connection = factory.newConnection();
@@ -34,6 +36,16 @@ public class InQueueService {
 		this.channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 		
 		this.consumer = new InnerRequestHandler(this.channel);
+	}
+	
+	/*
+	 * Static Singleton Factory method to get a handle on the instance
+	 */
+	public static InQueueService getInstance() throws Exception {
+		if(instance == null) {
+			instance = new InQueueService();
+		}
+		return instance;
 	}
 	
 	/*
@@ -59,7 +71,7 @@ public class InQueueService {
 	private class InnerRequestHandler extends DefaultConsumer {
 		private ExecutorService executorService;
 		
-		public InnerRequestHandler(Channel channel) {
+		private InnerRequestHandler(Channel channel) {
 			super(channel);
 			this.executorService = Executors.newFixedThreadPool(5);
 		}

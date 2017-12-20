@@ -30,7 +30,7 @@ public class RMIClient implements Runnable {
 			dictionary = (IDictionaryService) Naming.lookup(RMI_URL);
 			Response resp = new Response(this.request.getTaskId(), dictionary.lookUp(request.getQuery()));
 			
-			this.outQueueService = new OutQueueService();
+			this.outQueueService = OutQueueService.getInstance();
 			outQueueService.queueResponse(resp);
 		} catch (Exception e) {
 			e.printStackTrace();

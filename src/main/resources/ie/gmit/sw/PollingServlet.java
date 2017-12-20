@@ -20,8 +20,8 @@ public class PollingServlet extends HttpServlet {
 
 	public void init(ServletConfig config) throws ServletException {
 		try {		
-			// Instantiate the OutQueueService
-			this.outQueueService = new OutQueueService();
+			// Get a handle on the OutQueueService instance
+			this.outQueueService = OutQueueService.getInstance();
 			outQueueService.consumeResponse();
 
 		} catch (Exception e) {
