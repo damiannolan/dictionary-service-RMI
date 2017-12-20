@@ -70,7 +70,8 @@ public class DictionaryService extends UnicastRemoteObject implements IDictionar
 	}
 	
 	public List<String> lookUp(String s) {
-		System.out.println("Requested lookup - " + s);
+		// Log
+		System.out.println("[INFO] Query Request - " + s);
 		
 		
 		List<String> defList = getDefintion(s);
