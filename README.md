@@ -59,7 +59,7 @@ java -cp ./dictionary-service.jar ie.gmit.sw.server.ServiceSetup
 
 4. Drag and Drop `Dictionary-Service-Webapp.war` into an Apache Tomcat Installation directory under the folder named webapps.
 
-5. Start your Tomcat Server and navigate to `http://localhost:8080/dictionary-webapp/`
+5. Start your Tomcat Server and navigate to `http://localhost:8080/Dictionary-Service-Webapp/`
 
 #### OSX 
 ```
