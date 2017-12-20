@@ -45,7 +45,7 @@ To use the application simply:
 
 1. Clone this Respository
 ```
-git clone (insert git clone link here)
+git clone https://github.com/damiannolan/dictionary-service-RMI.git
 ```
 
 2. Start RabbitMQ as previously mentioned above
@@ -57,7 +57,7 @@ git clone (insert git clone link here)
 java -cp ./dictionary-service.jar ie.gmit.sw.server.ServiceSetup
 ```
 
-4. Drag and Drop `dictionary-webapp.war` into an Apache Tomcat Installation directory under the folder named webapps.
+4. Drag and Drop `Dictionary-Service-Webapp.war` into an Apache Tomcat Installation directory under the folder named webapps.
 
 5. Start your Tomcat Server and navigate to `http://localhost:8080/dictionary-webapp/`
 
