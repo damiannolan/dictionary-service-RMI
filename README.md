@@ -3,9 +3,9 @@
 ## Overview
 
 The following repository contains a relatively straight forward Apache Tomcat Web Application employing Java Servlets and JSP as well as a RMI Service for querying dictionary definitions. 
-The web client presents a basic user interface in which a user can enter a search string and submit it to be processed by the application. The application has been setup to simulate a delay of requests being added to a queueing system. This effectively demonstrates the asynchronous communication.  
+The web client presents a basic user interface in which a user can enter a search string and submit it to be processed by the application. The application has been setup to simulate a delay of requests being added to a queueing system. This effectively demonstrates the asynchronous communication. Message Queues are implemented using RabbitMQ and the system also employs multiple RMI Client threads.
 
-The following diagram depicts the overall system architecture:
+The following diagram depicts the overall system architecture and flow of execution:
 
 ![diagram](https://i.imgur.com/0KsUbvT.png)
 
