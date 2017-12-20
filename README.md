@@ -15,7 +15,7 @@ The following diagram depicts the overall system architecture:
 - [Maven](https://maven.apache.org/)
 - [RabbitMQ](https://www.rabbitmq.com/)
 
-### Getting setup with RabbitMQ
+### Getting Started with RabbitMQ
 
 If you are on OSX [Homebrew](https://brew.sh/) makes it easy to install various dependencies and manage services with [Brew Services](https://github.com/Homebrew/homebrew-services) such as RabbitMQ as well as various other dependencies such as databases - i.e. CouchDB or MySQL. To 
 get started with RabbitMQ follow these instructions.
@@ -49,6 +49,8 @@ git clone
 ```
 
 2. Start RabbitMQ as previously mentioned above
+
++ [Getting Started with RabbitMQ](#getting-started-with-rabbitmq)
 
 3. Start the RMI Server Application
 ```
