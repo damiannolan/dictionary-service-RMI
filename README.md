@@ -3,7 +3,7 @@
 ## Overview
 
 The following repository contains a relatively straight forward Apache Tomcat Web Application employing Java Servlets and JSP as well as a RMI Service for querying dictionary definitions. 
-The web client presents a basic user interface in which a user can enter a search string and submit it to be processed by the application. The application has been setup to simulate a delay of requests being added to a queueing system.
+The web client presents a basic user interface in which a user can enter a search string and submit it to be processed by the application. The application has been setup to simulate a delay of requests being added to a queueing system. This effectively demonstrates the asynchronous communication.  
 
 The following diagram depicts the overall system architecture:
 
@@ -84,6 +84,27 @@ mvn install
 ```
 Eclipse -> File -> Import -> Maven -> Existing Maven Projects
 ```
+
+## Codebase
+
+The application employs two Java Servlets - DictionaryServlet and PollingServlet for handling requests made by the client and polling of the server for a response respectively. HTML form information is sent to a servlet that adds the client request to an **InQueue** which is then in turn pulled from the queue and dispatched to an RMI Client Worker thread. The worker thread handles processing of the request and communications with an RMI Dictionary Service in order to fetch a number of defintions. The response is then added to an **OutQueue** and returned to the client via a PollingServlet which employs short polling every 10 seconds.
+
+Application source code is packaged under the name `ie.gmit.sw` and `ie.gmit.sw.server`.
+
+#### RMI Dictionary Service
+
+- IDictionaryService
+- DictionaryService
+- ServiceSetup
+
+#### Dictionary Web Application
+
+- DictionaryServlet
+- PollingServlet
+- Request / Response
+- InQueueService
+- OutQueueService
+- RMIClient
 
 ## Example
 
