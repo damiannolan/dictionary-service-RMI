@@ -45,7 +45,7 @@ To use the application simply:
 
 1. Clone this Respository
 ```
-git clone 
+git clone (insert git clone link here)
 ```
 
 2. Start RabbitMQ as previously mentioned above
@@ -84,4 +84,8 @@ mvn install
 ```
 Eclipse -> File -> Import -> Maven -> Existing Maven Projects
 ```
+
+## Example
+
+![example](https://i.imgur.com/wmLOzY5.gifv)
 
